@@ -7,15 +7,19 @@ interface Note {
 }
 
 const DataRow = ({ day, record}: {day: number, record: Record}) => {
+    const roas = useMemo(() => {
+        return  (record.amountSpent as number) > 0 ? +((record.sales as number) / (record.amountSpent as number)).toFixed(2) : 0;
+    }, [record.amountSpent, record.sales])
+
     const roasNote: Note = useMemo(() => {
-        if (record.roas as number >= 6) {
+        if (roas as number >= 6) {
             return { note: 'High ROAS', status: true }
-        } else if (record.roas as number >= 3 && record.roas as number < 6) {
+        } else if ((roas as number) >= 3 && (roas as number) < 6) {
             return { note: 'Good ROAS', status: true }
         } else {
             return { note: 'Low ROAS', status: false }
         }
-    }, [record.roas])
+    }, [roas, record.amountSpent, record.sales])
 
     const ctrNote: Note = useMemo(() => {
         if (record.ctr as number >= 1.5) {
@@ -53,14 +57,25 @@ const DataRow = ({ day, record}: {day: number, record: Record}) => {
         cpmNote, ctrNote, hookRateNote, msgConversionRateNote, roasNote
     ])
 
+    const currencyFormatter = (amount: number) => {
+        return new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+        }).format(amount);
+    };
+
+    const percentageFormatter = (value: number): string => {
+        return `${(value).toFixed(2)}%`;
+    };
+
     return <tr>
         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{day}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.amountSpent}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.roas}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.ctr}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.cpm}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.hookRate}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.messageConversationRate}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{currencyFormatter(record.amountSpent as number)}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{roas}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{percentageFormatter(record.ctr as number)}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{currencyFormatter(record.cpm as number)}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{percentageFormatter(record.hookRate as number)}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{percentageFormatter(record.messageConversationRate as number)}</td>
         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">
             <div className="space-y-1">
                 {

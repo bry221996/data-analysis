@@ -2,15 +2,16 @@ import {Button, Dialog, DialogPanel, DialogBackdrop} from "@headlessui/react";
 import {Record} from "@/model/Record";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import {useCallback, useMemo} from "react";
 
 const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen: (data: boolean) => void, onChange: (record: Record) => void }) => {
     const validationSchema = Yup.object({
+        sales: Yup.number()
+            .required('Sales is required')
+            .min(0, 'Amount cannot be negative'),
         amountSpent: Yup.number()
             .required('Amount Spent is required')
             .min(0, 'Amount cannot be negative'),
-        roas: Yup.number()
-            .required('ROAS is required')
-            .min(0, 'ROAS cannot be negative'),
         ctr: Yup.number()
             .required('CTR is required')
             .min(0, 'CTR cannot be negative'),
@@ -28,11 +29,12 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
     const formik = useFormik<Record>({
         initialValues: {
             amountSpent: '',
-            roas: '',
+            roas: 0,
             ctr: '',
             cpm: '',
             hookRate: '',
             messageConversationRate: '',
+            sales: '',
         },
         validationSchema,
         onSubmit: (values) => {
@@ -42,6 +44,13 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
             setIsOpen(false)
         },
     });
+
+    const roas = useMemo(() => {
+        const amountSpent = (formik.values.amountSpent ?? 0) as number;
+        const sales = (formik.values.sales ?? 0) as number;
+
+        return  amountSpent > 0 ? +(sales / amountSpent).toFixed(2) : 0;
+    }, [formik.values.amountSpent, formik.values.sales])
 
     return <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsOpen(false)}>
         <DialogBackdrop className="fixed inset-0 bg-black/70" />
@@ -54,11 +63,25 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
                     <div>
                         <form onSubmit={formik.handleSubmit} className="space-y-4">
                             <div className="">
+                                <label htmlFor="username" className="block text-sm font-medium text-gray-900">Sales</label>
+                                <div className="mt-2">
+                                    <div
+                                        className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+                                        <input id={'sales'} onChange={(e) => {
+                                            formik.handleChange(e);
+                                        }} value={formik.values.sales} type="number" className="block min-w-0 grow py-2.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="">
                                 <label htmlFor="username" className="block text-sm font-medium text-gray-900">Amount Spent</label>
                                 <div className="mt-2">
                                     <div
                                         className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                                        <input id={'amountSpent'} onChange={formik.handleChange} value={formik.values.amountSpent} type="number" className="block min-w-0 grow py-2.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
+                                        <input id={'amountSpent'} onChange={(e) => {
+                                            formik.handleChange(e)
+                                        }} value={formik.values.amountSpent} type="number" className="block min-w-0 grow py-2.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +91,7 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
                                 <div className="mt-2">
                                     <div
                                         className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                                        <input id={'roas'} onChange={formik.handleChange} value={formik.values.roas} type="number" className="block min-w-0 grow py-2.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
+                                        <input disabled id={'roas'} value={roas} type="number" className="block min-w-0 grow py-2.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"/>
                                     </div>
                                 </div>
                             </div>

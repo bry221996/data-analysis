@@ -6,25 +6,21 @@ const DataTable = ({ records }: { records: Record[]}) => {
     const avgRoas = useMemo(() => {
         if (records.length < 3) return 0;
 
-        const last3 = records.slice(0, 3); // newest first
+        const last3 = records.slice( -3); // newest first
 
-        const totalSales = last3.reduce((sum, r) => sum + (r.amountSpent as number) * (r.roas as number), 0);
+        const totalSales = last3.reduce((sum, r) => sum + (r.sales as number), 0);
         const totalSpent = last3.reduce((sum, r) => sum + (r.amountSpent as number), 0);
-
         return totalSpent > 0 ? +(totalSales / totalSpent).toFixed(2) : 0;
     }, [records]);
 
     const note = useMemo(() => {
         if (records.length < 3) return "insufficient data";
 
-        const last3 = records.slice(0, 3);
-        const [d1, d2, d3] = last3.map(r => r.roas);
+        const last3 = records.slice(-3);
+        const [d1, d2, d3] = last3.map(r => r.amountSpent ? (r.sales as number) / (r.amountSpent as number) : 0);
 
         const isUptrend = d3 >= d2 && d2 >= d1;
-        const strongJump = ((d2 as number) - (d3 as number)) > 2;
-
-        // console.log('isUptrend', isUptrend);
-        // console.log('strongJump', strongJump);
+        const strongJump = Math.abs(((d2 as number) - (d3 as number))) > 2;
 
         if (avgRoas >= 6) {
             return isUptrend || !strongJump ? "scale" : "maintain";
@@ -76,8 +72,22 @@ const DataTable = ({ records }: { records: Record[]}) => {
             </table>
 
             {
-                records.length >=3 && <div className="bg-gray-100 py-5 px-5 rounded-2xl">
-                    {avgRoas} - {note}
+                records.length >=3 && <div className="border-t border-gray-300 py-2">
+
+                    <div className="border border-gray-300 bg-gray-100 py-6 px-8 rounded-2xl text-center">
+                        <p className="text-base text-gray-500">Last 3 Days ROAS</p>
+                        <p className="text-4xl font-bold text-gray-800 mb-4">{avgRoas}</p>
+
+                        <span
+                            className={`inline-block px-4 py-2 rounded-full text-sm font-semibold uppercase tracking-wide
+                          ${note === 'scale' ? 'bg-green-200 text-green-800' : ''}
+                          ${note === 'maintain' ? 'bg-yellow-200 text-yellow-800' : ''}
+                          ${note === 'kill' ? 'bg-red-200 text-red-800' : ''}`}
+                            >
+                        {note}
+                      </span>
+                    </div>
+
                 </div>
             }
         </div>
