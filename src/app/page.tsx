@@ -16,14 +16,18 @@ export default function Home() {
 
   return (
     <div className="font-sans">
-      <main className="w-full max-w-6xl mx-auto border my-20 border-gray-200 rounded-2xl px-4 py-8">
-          <div>
-              <button className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" onClick={() => setIsOpen(true)}>Add Data</button>
+      <main className="w-full max-w-6xl mx-auto my-20">
+          <h1 className="text-xl font-bold text-center">Creative Ads Performance Analysis </h1>
+
+          <div className="border border-gray-200 rounded-2xl px-4 py-8">
+              {records.length < 3 && <div>
+                  <button className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" onClick={() => setIsOpen(true)}>Add Data</button>
+              </div>}
+
+              <FormModal isOpen={isOpen} setIsOpen={setIsOpen} onChange={appendData}/>
+
+              <DataTable records={records}/>
           </div>
-
-          <FormModal isOpen={isOpen} setIsOpen={setIsOpen} onChange={appendData}/>
-
-          <DataTable records={records}/>
       </main>
     </div>
   );

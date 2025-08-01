@@ -27,17 +27,19 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
 
     const formik = useFormik<Record>({
         initialValues: {
-            amountSpent: 0,
-            roas: 0,
-            ctr: 0,
-            cpm: 0,
-            hookRate: 0,
-            messageConversationRate: 0,
+            amountSpent: '',
+            roas: '',
+            ctr: '',
+            cpm: '',
+            hookRate: '',
+            messageConversationRate: '',
         },
         validationSchema,
         onSubmit: (values) => {
+            if (!formik.isValid) return;
             onChange(values);
             formik.resetForm();
+            setIsOpen(false)
         },
     });
 
@@ -115,8 +117,8 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
                             <div className="mt-4">
                                 <Button
                                     type={'submit'}
+                                    disabled={!formik.isValid}
                                     className="inline-flex items-center gap-2 rounded-md bg-gray-700 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:not-data-focus:outline-none data-focus:outline data-focus:outline-white data-hover:bg-gray-600 data-open:bg-gray-700"
-                                    onClick={() => setIsOpen(false)}
                                 >
                                     Submit
                                 </Button>

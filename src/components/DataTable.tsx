@@ -1,6 +1,6 @@
 import {Record} from "@/model/Record";
 import DataRow from "@/components/DataRow";
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 
 const DataTable = ({ records }: { records: Record[]}) => {
     const avgRoas = useMemo(() => {
@@ -8,8 +8,8 @@ const DataTable = ({ records }: { records: Record[]}) => {
 
         const last3 = records.slice(0, 3); // newest first
 
-        const totalSales = last3.reduce((sum, r) => sum + r.amountSpent * r.roas, 0);
-        const totalSpent = last3.reduce((sum, r) => sum + r.amountSpent, 0);
+        const totalSales = last3.reduce((sum, r) => sum + (r.amountSpent as number) * (r.roas as number), 0);
+        const totalSpent = last3.reduce((sum, r) => sum + (r.amountSpent as number), 0);
 
         return totalSpent > 0 ? +(totalSales / totalSpent).toFixed(2) : 0;
     }, [records]);
@@ -21,7 +21,7 @@ const DataTable = ({ records }: { records: Record[]}) => {
         const [d1, d2, d3] = last3.map(r => r.roas);
 
         const isUptrend = d3 >= d2 && d2 >= d1;
-        const strongJump = (d2 - d3) > 2;
+        const strongJump = ((d2 as number) - (d3 as number)) > 2;
 
         // console.log('isUptrend', isUptrend);
         // console.log('strongJump', strongJump);

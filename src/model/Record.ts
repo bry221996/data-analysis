@@ -1,8 +1,8 @@
 export interface Record {
-    amountSpent: number;
-    roas: number;
-    ctr: number;
-    cpm: number;
-    hookRate: number;
-    messageConversationRate: number
+    amountSpent: number | string;
+    roas: number | string;
+    ctr: number | string;
+    cpm: number | string;
+    hookRate: number | string;
+    messageConversationRate: number | string;
 }
