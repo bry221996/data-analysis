@@ -37,6 +37,7 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
         validationSchema,
         onSubmit: (values) => {
             onChange(values);
+            formik.resetForm();
         },
     });
 
