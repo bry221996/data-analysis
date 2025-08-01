@@ -1,4 +1,4 @@
-import {Button, Dialog, DialogPanel} from "@headlessui/react";
+import {Button, Dialog, DialogPanel, DialogBackdrop} from "@headlessui/react";
 import {Record} from "@/model/Record";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -41,6 +41,7 @@ const FormModal = ({ isOpen, setIsOpen, onChange }: {isOpen: boolean, setIsOpen:
     });
 
     return <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={() => setIsOpen(false)}>
+        <DialogBackdrop className="fixed inset-0 bg-black/70" />
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4">
                 <DialogPanel

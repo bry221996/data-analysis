@@ -54,14 +54,14 @@ const DataRow = ({ day, record}: {day: number, record: Record}) => {
     ])
 
     return <tr>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{day}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{record.amountSpent}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{record.roas}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{record.ctr}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{record.cpm}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{record.hookRate}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">{record.messageConversationRate}</td>
-        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500">
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{day}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.amountSpent}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.roas}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.ctr}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.cpm}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.hookRate}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{record.messageConversationRate}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">
             <div className="space-y-1">
                 {
                     notes.map(note => <p className={`${note.status ? 'bg-green-500' : 'bg-red-500'} text-white text-center rounded-md`} key={`notes-${day}-${note.note}`}>{note.note}</p>)
