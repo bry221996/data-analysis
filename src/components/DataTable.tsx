@@ -21,10 +21,13 @@ const DataTable = ({ records }: { records: Record[]}) => {
         const [d1, d2, d3] = last3.map(r => r.roas);
 
         const isUptrend = d3 >= d2 && d2 >= d1;
-        const strongJump = (d1 - d2) >= 2;
+        const strongJump = (d2 - d3) > 2;
+
+        // console.log('isUptrend', isUptrend);
+        // console.log('strongJump', strongJump);
 
         if (avgRoas >= 6) {
-            return isUptrend || strongJump ? "scale" : "maintain";
+            return isUptrend || !strongJump ? "scale" : "maintain";
         } else if (avgRoas >= 3) {
             return "maintain";
         } else {
