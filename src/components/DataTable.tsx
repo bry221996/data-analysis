@@ -1,6 +1,6 @@
 import {Record} from "@/model/Record";
 import DataRow from "@/components/DataRow";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 
 const DataTable = ({ records }: { records: Record[]}) => {
     const avgRoas = useMemo(() => {
@@ -26,7 +26,7 @@ const DataTable = ({ records }: { records: Record[]}) => {
         if (avgRoas >= 6) {
             return isUptrend || strongJump ? "scale" : "maintain";
         } else if (avgRoas >= 3) {
-            return isUptrend || strongJump ? "maintain" : "kill";
+            return "maintain";
         } else {
             return "kill";
         }
