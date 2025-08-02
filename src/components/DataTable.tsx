@@ -47,6 +47,12 @@ const DataTable = ({ records }: { records: Record[]}) => {
                         scope="col"
                         className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
                     >
+                        Sales
+                    </th>
+                    <th
+                        scope="col"
+                        className="py-3.5 pr-3 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8"
+                    >
                         Amount Spent
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
