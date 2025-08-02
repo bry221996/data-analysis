@@ -30,12 +30,12 @@ const DataRow = ({ day, record}: {day: number, record: Record}) => {
     }, [record.ctr])
 
     const cpmNote: Note = useMemo(() => {
-        if (record.ctr as number <= 15 && record.ctr as number > 0) {
+        if (record.cpm as number <= 15 && record.cpm as number > 0) {
             return { note: 'Good CPM', status: true }
         } else {
             return { note: 'Bad CPM', status: false }
         }
-    }, [record.ctr])
+    }, [record.cpm])
 
     const hookRateNote: Note = useMemo(() => {
         if (record.hookRate as number >= 40) {
