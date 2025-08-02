@@ -70,6 +70,7 @@ const DataRow = ({ day, record}: {day: number, record: Record}) => {
 
     return <tr>
         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{day}</td>
+        <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{currencyFormatter(record.sales as number)}</td>
         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{currencyFormatter(record.amountSpent as number)}</td>
         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{roas}</td>
         <td className="px-3 py-4 text-sm whitespace-nowrap text-gray-500 text-center">{percentageFormatter(record.ctr as number)}</td>

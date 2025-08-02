@@ -19,7 +19,7 @@ const DataTable = ({ records }: { records: Record[]}) => {
         const last3 = records.slice(-3);
         const [d1, d2, d3] = last3.map(r => r.amountSpent ? (r.sales as number) / (r.amountSpent as number) : 0);
 
-        const isUptrend = d3 >= d2 && d2 >= d1;
+        const isUptrend = (d3 >= d2 && d2 >= d1) || (d3 >= d2);
         const strongJump = Math.abs(((d2 as number) - (d3 as number))) > 2;
 
         if (avgRoas >= 6) {
